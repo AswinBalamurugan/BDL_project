@@ -2,9 +2,9 @@
 import os, uvicorn
 import urllib.request
 from pyspark.sql import SparkSession
-from pyspark.ml.feature import VectorAssembler, StringIndexer, StandardScaler
+from pyspark.ml.feature import VectorAssembler, StringIndexer, StandardScaler, StringIndexerModel, IndexToString
 from pyspark.ml import Pipeline
-from pyspark.ml.classification import RandomForestClassifier
+from pyspark.ml.classification import RandomForestClassifier, RandomForestClassificationModel
 import mlflow.spark 
 from fastapi import FastAPI, Body
 from pydantic import BaseModel
@@ -18,16 +18,16 @@ from sklearn.metrics import f1_score
 REQUEST_COUNT = Counter('request_count', 'Total number of requests')
 RESPONSE_TIME = Histogram('response_time', 'Response time in seconds')
 
-# create a SparkSession
-spark = SparkSession.builder.appName("IrisClassification").getOrCreate()
-
 # download the Iris dataset
 iris_data_url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
-iris_data_file = "iris.csv"
 cwd = '/Users/aswin/Downloads/Courses/Big Data Lab/Project'
 data_dir = os.path.join(cwd,"dataset")
 model_dir = os.path.join(cwd,"model")
-model_name = "spark_rfc_model"
+train_path = os.path.join(data_dir,"train_data")
+test_path = os.path.join(data_dir,'test_data')
+model_path = os.path.join(model_dir,"spark_rfc_model")
+label_model_path = os.path.join(model_dir,"label_model")
+iris_data_path = os.path.join(data_dir, 'iris.csv')
 
 try:
     os.mkdir(data_dir)
@@ -39,17 +39,14 @@ try:
 except OSError as error:
     pass
 
-model_path = os.path.join(model_dir,model_name)
-iris_data_path = os.path.join(data_dir, iris_data_file)
-
 # print(f"Downloading Iris dataset from {iris_data_url}")
 # urllib.request.urlretrieve(iris_data_url, iris_data_path)
 # print("Download complete.")
 
+# create a SparkSession
+spark = SparkSession.builder.appName("IrisClassification").getOrCreate()
+
 process_pipe = []
-# Preprocess label data 
-labelIndexer = StringIndexer(inputCol="label", outputCol="indexedLabel")
-process_pipe += [labelIndexer]
 
 # Create feature vector
 vectorAssembler = VectorAssembler(inputCols=["sepal_length", "sepal_width", "petal_length", "petal_width"], outputCol="features")
@@ -69,14 +66,16 @@ def preprocess_data(ti):
     iris_data = spark.read.csv(iris_data_path, header=False, inferSchema=True)
     iris_data = iris_data.toDF("sepal_length", "sepal_width", "petal_length", "petal_width", "label")
 
+    labelIndexer = StringIndexer(inputCol="label", outputCol="indexedLabel").fit(iris_data)
+    iris_data = labelIndexer.transform(iris_data)
+    labelIndexer.save(label_model_path)
+
     iris_data = pipe.fit(iris_data).transform(iris_data)
 
     # Split data into training and testing sets
     train_data, test_data = iris_data.randomSplit([0.8, 0.2], seed=15)
 
     # Save training and testing data
-    train_path = os.path.join(data_dir,"train_data")
-    test_path = os.path.join(data_dir,'test_data')
     train_data.write.mode('overwrite').parquet(train_path)
     test_data.write.mode('overwrite').parquet(test_path)
 
@@ -111,9 +110,8 @@ def train_model(ti):
 
         # define the machine learning pipeline
         rf = RandomForestClassifier(numTrees=100, maxDepth=5, featuresCol='feats',labelCol='indexedLabel', seed=15)
-        pipeline = Pipeline(stages=[rf])
 
-        model = pipeline.fit(train_data)
+        model = rf.fit(train_data)
 
         # log the model
         mlflow.spark.log_model(model, "model")
@@ -172,26 +170,28 @@ def preprocess_single_data(data: IrisData):
     data_list = [[data.sepal_length, data.sepal_width, data.petal_length, data.petal_width]]
     data_df = spark.createDataFrame(data_list, ["sepal_length", "sepal_width", "petal_length", "petal_width"])
     
-    data_pipe = Pipeline(stages= process_pipe[1:])
     # Preprocess data using the pipeline from preprocess_data function
-    processed_data = data_pipe.fit(data_df).transform(data_df)
+    processed_data = pipe.fit(data_df).transform(data_df)
     
-    spark.stop()
     return processed_data
 
 # Function to make predictions using the loaded model
 def make_predictions(processed_data):
-    # Create a new Spark session for each request
-    spark = SparkSession.builder.appName("IrisClassification").getOrCreate()
     
     # Load the trained model
-    model = spark.read.load(model_path)
+    model = RandomForestClassificationModel.load(model_path)
 
     # Make predictions
-    predictions = model.transform(processed_data)
+    predictions = model.transform(processed_data).withColumnRenamed("prediction", "indexedLabel")
+
+    # Load the label indexer model
+    labelmodel = StringIndexerModel.load(label_model_path)
+    inverse_label = IndexToString(inputCol='indexedLabel',outputCol='label',labels=labelmodel.labels)
+    pred = inverse_label.transform(predictions).toPandas()['label'].values[0]
 
     spark.stop()
-    return predictions.toPandas().to_json()
+
+    return pred
 
 # Route to handle prediction requests
 @app.post("/predict")
@@ -206,10 +206,10 @@ async def predict(data: IrisData = Body(...)):
         return predictions
 
 # Start the Prometheus metrics server
-start_http_server(8010)
+start_http_server(8001)
 
 if __name__ == '__main__':
-    uvicorn.run(app, host="127.0.0.1", port=8012)
+    uvicorn.run(app, host="127.0.0.1", port=8002)
 
 
 '''
