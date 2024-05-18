@@ -1,0 +1,33 @@
+[2024-05-18T11:23:14.862+0530] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: iris_classification.train_model manual__2024-05-18T05:52:54.373956+00:00 [queued]>
+[2024-05-18T11:23:14.869+0530] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: iris_classification.train_model manual__2024-05-18T05:52:54.373956+00:00 [queued]>
+[2024-05-18T11:23:14.869+0530] {taskinstance.py:2170} INFO - Starting attempt 1 of 0
+[2024-05-18T11:23:14.877+0530] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): train_model> on 2024-05-18 05:52:54.373956+00:00
+[2024-05-18T11:23:14.881+0530] {standard_task_runner.py:60} INFO - Started process 29574 to run task
+[2024-05-18T11:23:14.883+0530] {clientserver.py:543} INFO - Closing down clientserver connection
+[2024-05-18T11:23:14.889+0530] {standard_task_runner.py:87} INFO - Running: ['airflow', 'tasks', 'run', 'iris_classification', 'train_model', 'manual__2024-05-18T05:52:54.373956+00:00', '--job-id', '95', '--raw', '--subdir', 'DAGS_FOLDER/main.py', '--cfg-path', '/var/folders/fy/4q0txy357vvc35bhsxlfyr8c0000gn/T/tmp4os8f6jz']
+[2024-05-18T11:23:14.891+0530] {standard_task_runner.py:88} INFO - Job 95: Subtask train_model
+[2024-05-18T11:23:14.926+0530] {task_command.py:423} INFO - Running <TaskInstance: iris_classification.train_model manual__2024-05-18T05:52:54.373956+00:00 [running]> on host aswins-macbook-air.local
+[2024-05-18T11:23:14.968+0530] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airflow' AIRFLOW_CTX_DAG_ID='iris_classification' AIRFLOW_CTX_TASK_ID='train_model' AIRFLOW_CTX_EXECUTION_DATE='2024-05-18T05:52:54.373956+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-05-18T05:52:54.373956+00:00'
+[2024-05-18T11:23:15.476+0530] {clientserver.py:505} INFO - Error while sending or receiving.
+Traceback (most recent call last):
+  File "/Users/aswin/anaconda3/lib/python3.10/site-packages/py4j/clientserver.py", line 503, in send_command
+    self.socket.sendall(command.encode("utf-8"))
+BrokenPipeError: [Errno 32] Broken pipe
+[2024-05-18T11:23:15.479+0530] {clientserver.py:543} INFO - Closing down clientserver connection
+[2024-05-18T11:23:15.480+0530] {java_gateway.py:1052} INFO - Exception while sending command.
+Traceback (most recent call last):
+  File "/Users/aswin/anaconda3/lib/python3.10/site-packages/py4j/clientserver.py", line 503, in send_command
+    self.socket.sendall(command.encode("utf-8"))
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/aswin/anaconda3/lib/python3.10/site-packages/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+  File "/Users/aswin/anaconda3/lib/python3.10/site-packages/py4j/clientserver.py", line 506, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending
+[2024-05-18T11:23:15.482+0530] {clientserver.py:543} INFO - Closing down clientserver connection
+[2024-05-18T11:25:18.824+0530] {process_utils.py:131} INFO - Sending Signals.SIGTERM to group 29574. PIDs of all processes in the group: [29574]
+[2024-05-18T11:25:18.827+0530] {process_utils.py:86} INFO - Sending the signal Signals.SIGTERM to group 29574

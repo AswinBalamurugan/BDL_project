@@ -1,0 +1,6 @@
+artifact_location: mlflow-artifacts:/370707456448061209
+creation_time: 1715980812394
+experiment_id: '370707456448061209'
+last_update_time: 1715980812394
+lifecycle_stage: active
+name: mnist-MLflow-classification

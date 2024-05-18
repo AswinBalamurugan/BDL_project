@@ -1,0 +1,38 @@
+[2024-05-18T03:02:24.657+0530] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: iris_classification.train_model manual__2024-05-17T21:25:25.571965+00:00 [queued]>
+[2024-05-18T03:02:24.664+0530] {taskinstance.py:1956} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: iris_classification.train_model manual__2024-05-17T21:25:25.571965+00:00 [queued]>
+[2024-05-18T03:02:24.664+0530] {taskinstance.py:2170} INFO - Starting attempt 2 of 0
+[2024-05-18T03:02:24.675+0530] {taskinstance.py:2191} INFO - Executing <Task(PythonOperator): train_model> on 2024-05-17 21:25:25.571965+00:00
+[2024-05-18T03:02:24.681+0530] {standard_task_runner.py:60} INFO - Started process 14701 to run task
+[2024-05-18T03:02:24.687+0530] {clientserver.py:543} INFO - Closing down clientserver connection
+[2024-05-18T03:02:24.693+0530] {standard_task_runner.py:87} INFO - Running: ['airflow', 'tasks', 'run', 'iris_classification', 'train_model', 'manual__2024-05-17T21:25:25.571965+00:00', '--job-id', '72', '--raw', '--subdir', 'DAGS_FOLDER/main.py', '--cfg-path', '/var/folders/fy/4q0txy357vvc35bhsxlfyr8c0000gn/T/tmp0645z8r7']
+[2024-05-18T03:02:24.696+0530] {standard_task_runner.py:88} INFO - Job 72: Subtask train_model
+[2024-05-18T03:02:24.745+0530] {task_command.py:423} INFO - Running <TaskInstance: iris_classification.train_model manual__2024-05-17T21:25:25.571965+00:00 [running]> on host aswins-macbook-air.local
+[2024-05-18T03:02:24.803+0530] {taskinstance.py:2480} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airflow' AIRFLOW_CTX_DAG_ID='iris_classification' AIRFLOW_CTX_TASK_ID='train_model' AIRFLOW_CTX_EXECUTION_DATE='2024-05-17T21:25:25.571965+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-05-17T21:25:25.571965+00:00'
+[2024-05-18T03:02:25.467+0530] {clientserver.py:505} INFO - Error while sending or receiving.
+Traceback (most recent call last):
+  File "/Users/aswin/anaconda3/lib/python3.10/site-packages/py4j/clientserver.py", line 503, in send_command
+    self.socket.sendall(command.encode("utf-8"))
+BrokenPipeError: [Errno 32] Broken pipe
+[2024-05-18T03:02:25.472+0530] {clientserver.py:543} INFO - Closing down clientserver connection
+[2024-05-18T03:02:25.474+0530] {java_gateway.py:1052} INFO - Exception while sending command.
+Traceback (most recent call last):
+  File "/Users/aswin/anaconda3/lib/python3.10/site-packages/py4j/clientserver.py", line 503, in send_command
+    self.socket.sendall(command.encode("utf-8"))
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/aswin/anaconda3/lib/python3.10/site-packages/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+  File "/Users/aswin/anaconda3/lib/python3.10/site-packages/py4j/clientserver.py", line 506, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending
+[2024-05-18T03:02:25.480+0530] {clientserver.py:543} INFO - Closing down clientserver connection
+[2024-05-18T03:07:21.413+0530] {local_task_job_runner.py:302} WARNING - State of this instance has been externally set to None. Terminating instance.
+[2024-05-18T03:07:21.419+0530] {process_utils.py:131} INFO - Sending Signals.SIGTERM to group 14701. PIDs of all processes in the group: [14701]
+[2024-05-18T03:07:21.419+0530] {process_utils.py:86} INFO - Sending the signal Signals.SIGTERM to group 14701
+[2024-05-18T03:08:21.437+0530] {process_utils.py:149} WARNING - process psutil.Process(pid=14701, name='python3.10', status='running', started='03:02:24') did not respond to SIGTERM. Trying SIGKILL
+[2024-05-18T03:08:21.441+0530] {process_utils.py:86} INFO - Sending the signal Signals.SIGKILL to group 14701
+[2024-05-18T03:08:21.458+0530] {process_utils.py:79} INFO - Process psutil.Process(pid=14701, name='python3.10', status='terminated', exitcode=<Negsignal.SIGKILL: -9>, started='03:02:24') (14701) terminated with exit code Negsignal.SIGKILL
+[2024-05-18T03:08:21.458+0530] {standard_task_runner.py:175} ERROR - Job 72 was killed before it finished (likely due to running out of memory)

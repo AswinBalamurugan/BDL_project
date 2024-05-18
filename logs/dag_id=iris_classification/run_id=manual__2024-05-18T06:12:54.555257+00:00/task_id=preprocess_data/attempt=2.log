@@ -1,0 +1,40 @@
+[2024-05-18T11:52:09.618+0530] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-05-18T11:52:09.671+0530] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: iris_classification.preprocess_data manual__2024-05-18T06:12:54.555257+00:00 [queued]>
+[2024-05-18T11:52:09.681+0530] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: iris_classification.preprocess_data manual__2024-05-18T06:12:54.555257+00:00 [queued]>
+[2024-05-18T11:52:09.682+0530] {taskinstance.py:2306} INFO - Starting attempt 2 of 0
+[2024-05-18T11:52:09.696+0530] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): preprocess_data> on 2024-05-18 06:12:54.555257+00:00
+[2024-05-18T11:52:09.701+0530] {standard_task_runner.py:63} INFO - Started process 36528 to run task
+[2024-05-18T11:52:09.702+0530] {clientserver.py:543} INFO - Closing down clientserver connection
+[2024-05-18T11:52:09.711+0530] {standard_task_runner.py:90} INFO - Running: ['airflow', 'tasks', 'run', 'iris_classification', 'preprocess_data', 'manual__2024-05-18T06:12:54.555257+00:00', '--job-id', '107', '--raw', '--subdir', 'DAGS_FOLDER/main.py', '--cfg-path', '/var/folders/fy/4q0txy357vvc35bhsxlfyr8c0000gn/T/tmp4sobtrao']
+[2024-05-18T11:52:09.716+0530] {standard_task_runner.py:91} INFO - Job 107: Subtask preprocess_data
+[2024-05-18T11:52:09.721+0530] {clientserver.py:505} INFO - Error while sending or receiving.
+Traceback (most recent call last):
+  File "/Users/aswin/anaconda3/envs/bdl/lib/python3.10/site-packages/py4j/clientserver.py", line 503, in send_command
+    self.socket.sendall(command.encode("utf-8"))
+BrokenPipeError: [Errno 32] Broken pipe
+[2024-05-18T11:52:09.729+0530] {clientserver.py:543} INFO - Closing down clientserver connection
+[2024-05-18T11:52:09.730+0530] {java_gateway.py:1052} INFO - Exception while sending command.
+Traceback (most recent call last):
+  File "/Users/aswin/anaconda3/envs/bdl/lib/python3.10/site-packages/py4j/clientserver.py", line 503, in send_command
+    self.socket.sendall(command.encode("utf-8"))
+BrokenPipeError: [Errno 32] Broken pipe
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/aswin/anaconda3/envs/bdl/lib/python3.10/site-packages/py4j/java_gateway.py", line 1038, in send_command
+    response = connection.send_command(command)
+  File "/Users/aswin/anaconda3/envs/bdl/lib/python3.10/site-packages/py4j/clientserver.py", line 506, in send_command
+    raise Py4JNetworkError(
+py4j.protocol.Py4JNetworkError: Error while sending
+[2024-05-18T11:52:09.733+0530] {clientserver.py:543} INFO - Closing down clientserver connection
+[2024-05-18T11:52:09.779+0530] {task_command.py:426} INFO - Running <TaskInstance: iris_classification.preprocess_data manual__2024-05-18T06:12:54.555257+00:00 [running]> on host aswins-macbook-air.local
+[2024-05-18T11:52:09.839+0530] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airflow' AIRFLOW_CTX_DAG_ID='iris_classification' AIRFLOW_CTX_TASK_ID='preprocess_data' AIRFLOW_CTX_EXECUTION_DATE='2024-05-18T06:12:54.555257+00:00' AIRFLOW_CTX_TRY_NUMBER='2' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-05-18T06:12:54.555257+00:00'
+[2024-05-18T11:52:09.841+0530] {taskinstance.py:430} INFO - ::endgroup::
+[2024-05-18T11:52:44.915+0530] {local_task_job_runner.py:310} WARNING - State of this instance has been externally set to failed. Terminating instance.
+[2024-05-18T11:52:44.919+0530] {local_task_job_runner.py:222} INFO - ::endgroup::
+[2024-05-18T11:52:44.923+0530] {process_utils.py:132} INFO - Sending Signals.SIGTERM to group 36528. PIDs of all processes in the group: [36528]
+[2024-05-18T11:52:44.924+0530] {process_utils.py:87} INFO - Sending the signal Signals.SIGTERM to group 36528
+[2024-05-18T11:52:44.925+0530] {taskinstance.py:2611} ERROR - Received SIGTERM. Terminating subprocesses.
+[2024-05-18T11:52:44.927+0530] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-05-18T11:52:44.956+0530] {process_utils.py:80} INFO - Process psutil.Process(pid=36528, status='terminated', exitcode=0, started='11:52:09') (36528) terminated with exit code 0
