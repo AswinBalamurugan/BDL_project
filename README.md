@@ -52,9 +52,16 @@ airflow users create \
 - Start the Airflow webserver and scheduler:
 
 ```bash
-airflow webserver -D  # Open http://localhost:8080 in your web browser
+airflow webserver -D  
 airflow scheduler -D
 ```
+> or use
+
+```bash
+airflow standalone
+```
+
+Use `http://localhost:8080` to access the airflow webserver.
 
 - Trigger the Airflow DAG to run the pipeline by openning `http://localhost:8080` in your web browser.
 
