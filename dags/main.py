@@ -206,10 +206,10 @@ async def predict(data: IrisData = Body(...)):
         return predictions
 
 # Start the Prometheus metrics server
-start_http_server(8001)
+start_http_server(2355)
 
 if __name__ == '__main__':
-    uvicorn.run(app, host="127.0.0.1", port=8002)
+    uvicorn.run(app, host="127.0.0.1", port=2354)
 
 
 '''
