@@ -1,4 +1,5 @@
 # import necessary libraries
+import prometheus_client
 import os, uvicorn
 import urllib.request
 from pyspark.sql import SparkSession
@@ -6,17 +7,16 @@ from pyspark.ml.feature import VectorAssembler, StringIndexer, StandardScaler, S
 from pyspark.ml import Pipeline
 from pyspark.ml.classification import RandomForestClassifier, RandomForestClassificationModel
 import mlflow.spark 
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Body, Response
 from pydantic import BaseModel
-from prometheus_client import start_http_server, Counter, Histogram
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 from sklearn.metrics import f1_score
 
 # create metrics for monitoring
-REQUEST_COUNT = Counter('request_count', 'Total number of requests')
-RESPONSE_TIME = Histogram('response_time', 'Response time in seconds')
+REQUEST_COUNT = prometheus_client.Counter('request_count', 'Total number of requests')
+RESPONSE_TIME = prometheus_client.Histogram('response_time', 'Response time in seconds')
 
 # download the Iris dataset
 iris_data_url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
@@ -206,10 +206,19 @@ async def predict(data: IrisData = Body(...)):
         return predictions
 
 # Start the Prometheus metrics server
-start_http_server(2355)
+@app.get('/metrics')
+def get_metrics():
+    return Response(
+        content=prometheus_client.generate_latest(),
+        media_type="text/plain"
+    )
 
 if __name__ == '__main__':
-    uvicorn.run(app, host="127.0.0.1", port=2354)
+    uvicorn.run(
+        app,
+        host='0.0.0.0',
+        port=5000
+        )
 
 
 '''
