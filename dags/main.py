@@ -20,7 +20,7 @@ RESPONSE_TIME = prometheus_client.Histogram('response_time', 'Response time in s
 
 # download the Iris dataset
 iris_data_url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
-cwd = '/Users/aswin/Downloads/Courses/Big Data Lab/Project'
+cwd = os.getcwd()
 data_dir = os.path.join(cwd,"dataset")
 model_dir = os.path.join(cwd,"model")
 train_path = os.path.join(data_dir,"train_data")
