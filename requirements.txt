@@ -1,5 +1,5 @@
 uvicorn
-pyspark
+pyspark[pandas_on_spark]
 mlflow
 fastapi
 scikit-learn
