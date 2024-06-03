@@ -1,0 +1,7 @@
+digest: 52e3d278
+name: dataset
+profile: '{"approx_count": 115}'
+schema: ''
+source: '{"tags": {"mlflow.user": "aswin", "mlflow.source.name": "dags/train_model.py",
+  "mlflow.source.type": "LOCAL", "mlflow.source.git.commit": "705fc6fea9392602daab8c3d55c322b606ca47ec"}}'
+source_type: code

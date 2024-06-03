@@ -1,27 +1,39 @@
-version: '2'
+version: "3.9"
+
 services:
+  # FastAPI application
   iris-api:
-    container_name: iris-api
-    build: 
-      context: .
-      dockerfile: ./Dockerfile
-    restart: "on-failure"
+    build: .  # Build the FastAPI application image from current directory
     ports:
-      - 8000:8000
+      - 8000:8000  # Expose FastAPI application port
+    volumes:
+      - ./dataset:/app/dataset  # Mount your dataset directory
+
+  # Prometheus server
   prometheus:
     image: prom/prometheus:latest
-    restart: always
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    command: 
-      - '--config.file=/etc/prometheus/prometheus.yml'
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro  
     ports:
-      - 9090:9090
-  grafana:
-    image: grafana/grafana:latest  
-    restart: unless-stopped  
-    ports:
-      - 3000:3000  
-    volumes:
-      - ./grafana/datasources.yaml:/etc/grafana/provisioning/datasources.yaml  
+      - 9090:9090  # Expose Prometheus UI
 
+  # Grafana server
+  grafana:
+    image: grafana/grafana
+    volumes:
+      - grafana-data:/var/lib/grafana  # Persistent storage for Grafana data
+      # - ./grafana-dashboards:/etc/grafana/dashboards  # Mount your Grafana dashboards (optional)
+    ports:
+      - 3000:3000  # Expose Grafana UI
+
+volumes:
+  airflow-dags:  # Persistent storage for DAGs
+  airflow-logs:  # Persistent storage for Airflow logs
+  grafana-data:  # Persistent storage for Grafana data
+
+# Optional volume for custom Prometheus configuration
+# uncomment the line below if you have a prometheus.yml file
+# - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+# Optional volume for custom Grafana dashboards
+# uncomment the line below if you have a dashboards folder
+# - ./grafana-dashboards:/etc/grafana/dashboards

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/849840945492105990/0d4654eb612c41cb966f282fe55808b2/artifacts
+end_time: 1717392549482
+entry_point_name: ''
+experiment_id: '849840945492105990'
+lifecycle_stage: active
+run_id: 0d4654eb612c41cb966f282fe55808b2
+run_name: Iris-model-build
+run_uuid: 0d4654eb612c41cb966f282fe55808b2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1717392546600
+status: 3
+tags: []
+user_id: aswin
