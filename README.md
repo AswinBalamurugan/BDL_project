@@ -2,6 +2,9 @@
 
 This project aims to build a machine learning model for classifying iris flower species using the Iris dataset. It includes a data preprocessing pipeline, model training, and a REST API for making predictions. The pipeline is orchestrated using Apache Airflow, and the REST API is built with FastAPI.
 
+## Grafana Dashboard
+![grafana dashboard](https://github.com/AswinBalamurugan/BDL_project/blob/main/imgs/grafana.png)
+
 ## Prerequisites
 
 - Python 3.7 or later
@@ -64,7 +67,7 @@ Use `http://localhost:8080` to access the airflow webserver.
 - Start the MLflow server:
 
 ```bash
-mlflow UI
+mlflow ui
 ```
 Open the MLflow UI at `http://localhost:5000` to view experiment runs and logged metrics.
 
@@ -90,18 +93,16 @@ This will start the following services:
 
 ## Accessing the Applications
 
-- FastAPI application: http://localhost:8000
+- FastAPI application: http://localhost:8000/docs
 - Prometheus: http://localhost:9090
 - Grafana: http://localhost:3000
 
 ### Using the FastAPI application
-Send a POST request to the /predict endpoint with the input data in JSON format:
+Send a POST request to the `/predict` endpoint with the input data in JSON format:
 
 ```bash
 curl -X POST -H "Content-Type: application/json" -d '{"sepal_length": 5.1, "sepal_width": 3.5, "petal_length": 1.4, "petal_width": 0.2}' http://127.0.0.1:8000/predict
 ```
-
-Or access the API @ `http://127.0.0.1:8000/docs` to use it.
 
 ### Monitoring with Prometheus and Grafana
 The FastAPI application exposes a `/metrics` endpoint that Prometheus can scrape to collect application metrics. 
