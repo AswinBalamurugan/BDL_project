@@ -9,6 +9,8 @@ This project aims to build a machine learning model for classifying iris flower 
 - MLflow
 - FastAPI
 - Prometheus
+- Docker
+- Grafana
 - Apache Airflow
 
 ## Setup
@@ -52,12 +54,6 @@ airflow users create \
 - Start the Airflow webserver and scheduler:
 
 ```bash
-airflow webserver -D  
-airflow scheduler -D
-```
-> or use
-
-```bash
 airflow standalone
 ```
 
@@ -74,12 +70,31 @@ Open the MLflow UI at `http://localhost:5000` to view experiment runs and logged
 
 ## FastAPI
 
-Start the FastAPI server:
+1. Build the Docker images:
 
 ```bash
-uvicorn dags.main:app --reload
+docker-compose build
 ```
 
+2. Start the applications using:
+
+```bash
+docker-compose up -d
+```
+
+This will start the following services:
+
+- `iris-api`: The FastAPI application for making iris species predictions.
+- `prometheus`: The Prometheus server for monitoring.
+- `grafana`: The Grafana server for visualizing metrics.
+
+## Accessing the Applications
+
+- FastAPI application: http://localhost:8000
+- Prometheus: http://localhost:9090
+- Grafana: http://localhost:3000
+
+### Using the FastAPI application
 Send a POST request to the /predict endpoint with the input data in JSON format:
 
 ```bash
@@ -88,24 +103,44 @@ curl -X POST -H "Content-Type: application/json" -d '{"sepal_length": 5.1, "sepa
 
 Or access the API @ `http://127.0.0.1:8000/docs` to use it.
 
-## Project Structure 
+### Monitoring with Prometheus and Grafana
+The FastAPI application exposes a `/metrics` endpoint that Prometheus can scrape to collect application metrics. 
+The following metrics are exposed:
 
-- `dags/main.py`: FastAPI application with the REST API endpoint
-- `dags/main.py`: Airflow DAG for orchestrating the pipeline
-- `data/`: Directory for storing the Iris dataset and preprocessed data
-- `model/`: Directory for storing the trained models
-- `mlruns/`: Directory for MLflow experiment tracking
-- `requirements.txt`: File listing the Python dependencies
+- `request_count`: Total number of requests
+- `response_time`: Response time in seconds
+- `prediction_time`: Time taken to make a prediction
+- `data_processing_time`: Time taken to preprocess the input data
+- `memory_usage`: Memory usage of the application (in GB)
+- `cpu_usage`: CPU usage of the application (percentage)
 
-## Explanation for main.py
-This code defines an Airflow DAG with two tasks: `preprocess_data` and `train_model`. The `preprocess_data` task reads the Iris dataset, performs data preprocessing steps (label indexing and feature vector assembly), splits the data into training and testing sets, and saves them as Parquet files. The train_model task retrieves the preprocessed data paths from XCom, loads the data, trains a Random Forest Classifier model, logs the model and metrics to MLflow, and evaluates the model's performance using the F1 score.
+### Grafana Dashboard setup
+Once you access the Grafana application at http://localhost:3000, you need to add the prometheus(http://localhost:9090) as a source. 
+The default login and password are **admin** and **admin**.
+
+## Dockerfile
+The `Dockerfile` installs the required dependencies and copies the application files to the Docker image. It exposes port *8000* for the FastAPI application and sets the entrypoint to run the `main.py` file.
+### Docker Compose
+The `docker-compose.yml` file defines the following services:
+
+- `iris-api`: Builds the FastAPI application image from the current directory and exposes port 8000. It also mounts the `dataset` directory from the host machine.
+- `prometheus`: Runs the Prometheus server and mounts the `prometheus.yml` configuration file.
+- `grafana`: Runs the Grafana server, exposes port *3000*, and mounts persistent storage volumes for Grafana data and dashboards (if present).
+
+The `volumes` section defines persistent storage volumes for Airflow DAGs, logs, and Grafana data.
+
+## Stopping the Applications
+To stop the applications, run the following command:
+```bash 
+docker-compose down 
+```
+This will stop and remove the containers, networks, and volumes created by Docker Compose.
 
 
 ## To kill the processes in ports use the below commands
 
 ```bash
-pkill -f "airflow webserver"
-pkill -f "airflow scheduler"
-pkill -f "uvicorn"
+pkill -f "airflow"
+pkill -f "python"
 ```
 Make sure to adjust the file paths and configurations according to your environment.
