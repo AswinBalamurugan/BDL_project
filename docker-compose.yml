@@ -22,13 +22,10 @@ services:
     image: grafana/grafana
     volumes:
       - grafana-data:/var/lib/grafana  # Persistent storage for Grafana data
-      # - ./grafana-dashboards:/etc/grafana/dashboards  # Mount your Grafana dashboards (optional)
     ports:
       - 3000:3000  # Expose Grafana UI
 
 volumes:
-  airflow-dags:  # Persistent storage for DAGs
-  airflow-logs:  # Persistent storage for Airflow logs
   grafana-data:  # Persistent storage for Grafana data
 
 # Optional volume for custom Prometheus configuration

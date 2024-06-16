@@ -9,9 +9,9 @@ COPY requirements.txt .
 
 RUN pip3 install -r requirements.txt
 
-COPY dags/ dags/
+COPY code_files/ code_files/
 COPY model/ model/
 
 EXPOSE 8000
 
-ENTRYPOINT [ "python", "dags/main.py" ]
+ENTRYPOINT [ "python", "code_files/main.py" ]

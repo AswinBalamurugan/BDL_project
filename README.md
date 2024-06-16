@@ -14,7 +14,6 @@ This project aims to build a machine learning model for classifying iris flower 
 - Prometheus
 - Docker
 - Grafana
-- Apache Airflow
 
 ## Setup
 
@@ -34,42 +33,20 @@ pip install -r requirements.txt
 ```
 
 ## Running the Applications
-Airflow
-
-- Initialize the Airflow database:
-
-```bash
-airflow db init
-```
-
-- Create an Airflow user:
-
-```bash
-airflow users create \
-    --username airflow \
-    --firstname Airflow \
-    --lastname User \
-    --role Admin \
-    --email admin@example.com \
-    --password airflow
-```
-
-- Start the Airflow webserver and scheduler:
-
-```bash
-airflow standalone
-```
-
-Use `http://localhost:8080` to access the airflow webserver.
-
-- Trigger the Airflow DAG to run the pipeline by openning `http://localhost:8080` in your web browser.
-
 - Start the MLflow server:
 
 ```bash
 mlflow ui
 ```
-Open the MLflow UI at `http://localhost:5000` to view experiment runs and logged metrics.
+Open the MLflow UI at `http://127.0.0.1:5000` to view experiment runs and logged metrics.
+
+- Training the model (Optional)
+If you don't have a pre-trained model, you can run the training script:
+
+```bash
+python main.py --train
+```
+This script downloads the Iris dataset, pre-processes it using Spark, and trains the model.
 
 ## FastAPI
 
@@ -141,7 +118,7 @@ This will stop and remove the containers, networks, and volumes created by Docke
 ## To kill the processes in ports use the below commands
 
 ```bash
-pkill -f "airflow"
+pkill -f "spark uvicorn"
 pkill -f "python"
 ```
 Make sure to adjust the file paths and configurations according to your environment.
