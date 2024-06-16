@@ -40,7 +40,7 @@ pip install -r requirements.txt
 ```bash
 mlflow ui
 ```
-Open the MLflow UI at `http://127.0.0.1:5000` to view experiment runs and logged metrics.
+Open the MLflow UI at http://127.0.0.1:5000 to view experiment runs and logged metrics.
 
 - Training the model (Optional)
 If you don't have a pre-trained model, you can run the training script:
