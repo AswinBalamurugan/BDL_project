@@ -1,6 +1,6 @@
 # Iris Classification Project
 
-This project aims to build a machine learning model for classifying iris flower species using the Iris dataset. It includes a data preprocessing pipeline, model training, and a REST API for making predictions. The pipeline is orchestrated using Apache Airflow, and the REST API is built with FastAPI.
+This project aims to build a machine learning model for classifying iris flower species using the Iris dataset. It includes a data preprocessing pipeline, model training, and a REST API for making predictions. The pipeline is made optional using argument parser, and the REST API is built with FastAPI.
 
 ## Grafana Dashboard
 ![grafana dashboard](https://github.com/AswinBalamurugan/Iris_API_project/blob/main/imgs/grafana.png)
@@ -105,7 +105,7 @@ The `docker-compose.yml` file defines the following services:
 - `prometheus`: Runs the Prometheus server and mounts the `prometheus.yml` configuration file.
 - `grafana`: Runs the Grafana server, exposes port *3000*, and mounts persistent storage volumes for Grafana data and dashboards (if present).
 
-The `volumes` section defines persistent storage volumes for Airflow DAGs, logs, and Grafana data.
+The `volumes` section defines persistent storage volumes Grafana data.
 
 ## Stopping the Applications
 To stop the applications, run the following command:
