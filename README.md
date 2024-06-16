@@ -1,9 +1,11 @@
-# Iris Classification Project
+Please refer: [My Project Collection](https://github.com/AswinBalamurugan/Machine_Learning_Projects/blob/main/README.md)
 
-This project aims to build a machine learning model for classifying iris flower species using the Iris dataset. It includes a data preprocessing pipeline, model training, and a REST API for making predictions. The pipeline is made optional using argument parser, and the REST API is built with FastAPI.
+# MLOpsIris: A Harmonious Blend of ML, APIs, and Monitoring with Iris Dataset
+
+This project aims to build a machine-learning model for classifying iris flower species using the Iris dataset. It includes a data preprocessing pipeline, model training, and a REST API for making predictions. The pipeline is made optional using argument parser, and the REST API is built with FastAPI.
 
 ## Grafana Dashboard
-![grafana dashboard](https://github.com/AswinBalamurugan/Iris_API_project/blob/main/imgs/grafana.png)
+![grafana dashboard](https://github.com/AswinBalamurugan/MLOps_Iris/blob/main/imgs/grafana.png)
 
 ## Prerequisites
 
@@ -20,7 +22,7 @@ This project aims to build a machine learning model for classifying iris flower 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/AswinBalamurugan/Iris_API_project.git
+git clone https://github.com/AswinBalamurugan/MLOps_Iris.git
 cd iris-classification
 ```
 
@@ -33,7 +35,7 @@ pip install -r requirements.txt
 ```
 
 ## Running the Applications
-- Start the MLflow server:
+- Start the MLflow server (if you want to re-train the model):
 
 ```bash
 mlflow ui
